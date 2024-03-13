@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+
 # import matplotlib.pyplot as plt
 import plotly.express as px
 from src.fetch_data import load_data_from_lag_to_today
@@ -7,6 +8,7 @@ from src.process_data import col_date, col_donnees, main_process, fic_export_dat
 import logging
 import os
 import glob
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -23,21 +25,27 @@ for file_path in glob.glob("data/raw/*json"):
 # plt.switch_backend("TkAgg")
 
 # Title for your app
-st.title('Data Visualization App')
+st.title("Data Visualization App")
+
 
 # Load data from CSV
-@st.cache_data(ttl=15*60)  # This decorator caches the data to prevent reloading on every interaction.
+@st.cache_data(
+    ttl=15 * 60
+)  # This decorator caches the data to prevent reloading on every interaction.
 def load_data(lag_days: int):
     load_data_from_lag_to_today(lag_days)
     main_process()
-    data = pd.read_csv(fic_export_data, parse_dates=[col_date])  # Adjust 'DateColumn' to your date column name*
+    data = pd.read_csv(
+        fic_export_data, parse_dates=[col_date]
+    )  # Adjust 'DateColumn' to your date column name*
     return data
+
 
 # Assuming your CSV is named 'data.csv' and is in the same directory as your app.py
 df = load_data(LAG_N_DAYS)
 
 # Creating a line chart
-st.subheader('Line Chart of Numerical Data Over Time')
+st.subheader("Line Chart of Numerical Data Over Time")
 
 # Select the numerical column to plot
 # This lets the user select a column if there are multiple numerical columns available
@@ -55,5 +63,5 @@ numerical_column = col_donnees
 
 # ! Plotly
 # Create interactive line chart using Plotly
-fig = px.line(df, x=col_date, y=col_donnees, title='Consommation en fonction du temps')
+fig = px.line(df, x=col_date, y=col_donnees, title="Consommation en fonction du temps")
 st.plotly_chart(fig)

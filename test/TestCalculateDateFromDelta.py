@@ -1,6 +1,9 @@
 import unittest
 from datetime import datetime, timedelta
-from src.fetch_data import calculate_date_from_delta  # Ensure to import your function correctly
+from src.fetch_data import (
+    calculate_date_from_delta,
+)  # Ensure to import your function correctly
+
 
 class TestCalculateDateFromDelta(unittest.TestCase):
 
@@ -26,5 +29,6 @@ class TestCalculateDateFromDelta(unittest.TestCase):
         result = calculate_date_from_delta(-5, start_date)
         self.assertEqual(result, expected_date)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
