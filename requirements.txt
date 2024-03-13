@@ -4,6 +4,7 @@ psycopg2-binary
 # Django>=3.0,<4.0  # If using Django
 streamlit  # If using Streamlit
 plotly
+black
 
 # # Uncomment these lines to use a Postgres database. Both are needed, since in production
 # # (which uses Linux) we want to install from source, so that security updates from the
