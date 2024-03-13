@@ -1,4 +1,4 @@
-name: Python application CI
+name: CI on Github - CD on Heroku
 
 on:
   push:
@@ -9,7 +9,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -33,3 +32,17 @@ jobs:
     - name: Lint with black
       uses: psf/black@stable  # formatting with black
       continue-on-error: true
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Heroku
+      uses: akhileshns/heroku-deploy@v3.13.15 # This is a popular GitHub Action for deploying to Heroku
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: "vars.HEROKU_APP_NAME" # Replace with your Heroku app name
+        heroku_email: ${{ secrets.HEROKU_EMAIL }} # Your Heroku account email
+        # Optional: Add this if your project is not at the repo root
+        # appdir: "your-app-directory"
