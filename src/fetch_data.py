@@ -46,11 +46,15 @@ def fetch_data(api_url):
             json.dump(data, f)
     return status_code
 
-if __name__ == "__main__":
-
-    last_n_days: int = 7
-    
-    for d in range(0, last_n_days + 1):
+def load_data_from_lag_to_today(n_days: int):
+    for d in range(0, n_days + 1):
         date: str = calculate_date_from_delta(d)
         print(date)
         fetch_data(build_url(date))
+
+
+if __name__ == "__main__":
+
+    last_n_days: int = 7
+    load_data_from_lag_to_today(last_n_days)
+    

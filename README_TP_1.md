@@ -61,12 +61,11 @@ Returns:
 
 Code de l'appel dans le main du fichier `fetch_data.py` (déjà présent)
 ```
-last_n_days: int = 7
-
-for d in range(0, last_n_days + 1):
-    date: str = calculate_date_from_delta(d)
-    print(date)
-    fetch_data(build_url(date))
+def load_data_from_lag_to_today(n_days: int):
+    for d in range(0, n_days + 1):
+        date: str = calculate_date_from_delta(d)
+        print(date)
+        fetch_data(build_url(date))
 ```
 
 Tests unitaires : afin de valider le code de la fonction, un script de tests unitaires est fourni dans le dossier `test`. L'exécution du script devrait valider les 3 tests.

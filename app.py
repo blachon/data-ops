@@ -2,16 +2,23 @@ import streamlit as st
 import pandas as pd
 # import matplotlib.pyplot as plt
 import plotly.express as px
-from src.fetch_data import fetch_data, build_url
-from src.process_data import col_date, col_donnees, cols, fic_export_data, main_process
+from src.fetch_data import load_data_from_lag_to_today
+from src.process_data import col_date, col_donnees, main_process, fic_export_data
 import logging
 import os
+import glob
 logging.basicConfig(level=logging.INFO)
 
+
+LAG_N_DAYS: int = 7
 
 # * INIT REPO FOR DATA
 os.makedirs("data/raw/", exist_ok=True)
 os.makedirs("data/interim/", exist_ok=True)
+
+# * remove outdated json files
+for file_path in glob.glob("data/raw/*json"):
+    os.remove(file_path)
 
 # plt.switch_backend("TkAgg")
 
@@ -20,19 +27,14 @@ st.title('Data Visualization App')
 
 # Load data from CSV
 @st.cache_data(ttl=15*60)  # This decorator caches the data to prevent reloading on every interaction.
-def load_data(file_path):
-    try:
-        data = pd.read_csv(file_path, parse_dates=[col_date])  # Adjust 'DateColumn' to your date column name*
-    except FileNotFoundError as e:
-        logging.warn(f"data file does not exist, calling fetch data to get last day of data")
-        last_day: str = "2024-03-08"
-        data: pd.DataFrame = fetch_data(build_url(last_day))
-        main_process()
-        data = pd.read_csv(file_path, parse_dates=[col_date])  # Adjust 'DateColumn' to your date column name*
+def load_data(lag_days: int):
+    load_data_from_lag_to_today(lag_days)
+    main_process()
+    data = pd.read_csv(fic_export_data, parse_dates=[col_date])  # Adjust 'DateColumn' to your date column name*
     return data
 
 # Assuming your CSV is named 'data.csv' and is in the same directory as your app.py
-df = load_data(fic_export_data)
+df = load_data(LAG_N_DAYS)
 
 # Creating a line chart
 st.subheader('Line Chart of Numerical Data Over Time')
