@@ -19,7 +19,7 @@ os.makedirs("data/interim/", exist_ok=True)
 st.title('Data Visualization App')
 
 # Load data from CSV
-@st.cache_data  # This decorator caches the data to prevent reloading on every interaction.
+@st.cache_data(ttl=15*60)  # This decorator caches the data to prevent reloading on every interaction.
 def load_data(file_path):
     try:
         data = pd.read_csv(file_path, parse_dates=[col_date])  # Adjust 'DateColumn' to your date column name*

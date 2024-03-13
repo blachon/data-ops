@@ -1,13 +1,12 @@
 ## Objectifs
-- Déployer l'app sur heroku cloud
-- Réaliser un changement en local, pousser sur Github
-- Mettre à jour l'application sur heroku (manuellement)
-- CI
-- CD
+1) Déployer manuellement l'app sur heroku cloud
+2) Réaliser un changement en local et déployer manuellement sur Heroku
+3) Mettre en place un pipeline de CI/CD vers Github avec déploiement sur Heroku
+4) Réaliser un changement en local, lancer le pipeline et déployer sur heroku
 
 ## Réalisations
 
-### Pré-requis : déploiement manuel de l'application
+### 1. Déploiement manuel de l'application
 
 #### Login (si ce n'est pas déjà fait)
 ```
@@ -35,9 +34,11 @@ heroku ps:scale web=1
 
 > A la fin du TP, penser à réduire à 0 la ressource de _compute_ provisionnés en répétant la commande ci-dessus avec '0' à la place de '1'.
 
-### Pré-requis : fonction à implémenter
+### 2. Réaliser un changement en local et déployer manuellement sur Heroku
 
-Objectif : ajouter une fonction dans le script de récupération des données pour collecter automatiquement les 7 derniers jours de données à partir de la date du jour
+#### Implémenter une nouvelle fonction
+
+Objectif : ajouter une fonction dans le script de récupération des données `fecth_data.py` pour collecter automatiquement les 7 derniers jours de données à partir de la date du jour. La zone à compléter est identifiée par un `TODO`.
 
 Signature de la fonction
 ```
@@ -58,7 +59,7 @@ Returns:
     str: date calculée, au format "%Y-%m-%d"
 ```
 
-Code de l'appel dans le main du fichier `fetch_data.py`
+Code de l'appel dans le main du fichier `fetch_data.py` (déjà présent)
 ```
 last_n_days: int = 7
 
@@ -68,7 +69,7 @@ for d in range(0, last_n_days + 1):
     fetch_data(build_url(date))
 ```
 
-Afin de valider le code de la fonction, un script de tests unitaires est fourni dans le dossier `test`. L'exécution du script devrait valider les 3 tests.
+Tests unitaires : afin de valider le code de la fonction, un script de tests unitaires est fourni dans le dossier `test`. L'exécution du script devrait valider les 3 tests.
 
 L'exécution du script se fait de la manière suivante :
 ```
@@ -88,7 +89,7 @@ $ $env:PYTHONPATH=$PWD; python.exe .\test\TestCalculateDateFromDelta.py
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 ```
 
-### Test en local
+#### Test en local
 ```
 $ heroku local -f Procfile.windows
 ```
@@ -96,11 +97,26 @@ $ heroku local -f Procfile.windows
 #### Résultat attendu
 Vous devriez voir le graphique qui contient maintenant un historique de 7 jours de données.
 
-### Mise à jour de l'application
+#### Déploiement manuel de l'application sur heroku
 
-#### Déploiement de l'application sur le cloud
-
-Commit les changements
+Commiter les changements puis déployer sur le cloud.
 ```
 git push heroku main
 ```
+
+Vérifier la ressource de compute associée à l'application et l'augmenter le cas échéant
+```
+# vérifier la ressource
+$ heroku ps:scale
+
+# ajouter une ressource si elle est à 0
+$ heroku ps:scale web=1
+```
+
+### 3. Pipeline de CI/CD
+
+TODO
+
+### 4. Exécution du pipeline après un changement local
+
+TODO

@@ -24,3 +24,13 @@ Run a remote terminal on server
 ```
 $ heroku run bash
 ```
+
+Create a staging environment on heroku (impossible to deploy an app from a remote different from heroku)
+```
+heroku create --remote staging
+```
+
+Deploy dev branch to main on heroku
+```
+git push heroku testbranch:main
+```
