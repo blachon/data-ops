@@ -34,3 +34,5 @@ Deploy dev branch to main on heroku
 ```
 git push heroku testbranch:main
 ```
+
+Heroku API Key is available here: https://dashboard.heroku.com/account
